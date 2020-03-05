@@ -3,7 +3,7 @@
 
 #define SIGN(x) (((x) > 0) - ((x) < 0))
 
-static unsigned int lines = 3;
+static unsigned int lines = 4;
 
 CGEventRef cgEventCallback(CGEventTapProxy proxy, CGEventType type,
                            CGEventRef event, void *refcon)
