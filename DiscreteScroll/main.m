@@ -1,7 +1,9 @@
 #import <ApplicationServices/ApplicationServices.h>
+#import <Foundation/Foundation.h>
 
 #define SIGN(x) (((x) > 0) - ((x) < 0))
-#define LINES 3
+
+static unsigned int lines = 3;
 
 CGEventRef cgEventCallback(CGEventTapProxy proxy, CGEventType type,
                            CGEventRef event, void *refcon)
@@ -9,14 +11,18 @@ CGEventRef cgEventCallback(CGEventTapProxy proxy, CGEventType type,
     if (!CGEventGetIntegerValueField(event, kCGScrollWheelEventIsContinuous)) {
         int64_t delta = CGEventGetIntegerValueField(event, kCGScrollWheelEventPointDeltaAxis1);
         
-        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, SIGN(delta) * LINES);
+        CGEventSetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1, SIGN(delta) * lines);
     }
     
     return event;
 }
 
-int main(void)
+int main(int argc, const char* argv[])
 {
+    if (argc > 1) {
+        NSString *numberOfLines = @(argv[1]);
+        lines = [numberOfLines intValue];
+    }
     CFMachPortRef eventTap;
     CFRunLoopSourceRef runLoopSource;
     
